@@ -3,20 +3,8 @@ package chapter3;
 
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.Factory;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
-import com.xlx.ss.util.SecurityManagerTools;
 
 /**
  * 基于角色访问

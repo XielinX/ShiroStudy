@@ -8,10 +8,9 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.xlx.ss.util.SecurityManagerTools;
+import com.xlx.ss.shiro.chapter2.SecurityManagerTools;
 
 
 /**

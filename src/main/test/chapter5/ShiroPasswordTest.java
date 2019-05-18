@@ -1,12 +1,13 @@
 package chapter5;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.converters.AbstractConverter;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.junit.Test;
+
+import com.xlx.ss.shiro.chapter5.EnumConverter;
 
 import chapter3.AbstractRole;
 
@@ -52,17 +53,20 @@ public class ShiroPasswordTest extends AbstractRole {
   }
   
   @Test
-  public void jdbchashedCredentialsMatcherTest() {//数据库查询 salt=24520ee264eab73ec09451d0e9ea6aac
-   //Shiro默认使用了apache commons BeanUtils，默认是不进行Enum类型转型的，此时需要自己注册一个Enum转换器
+  public void jdbchashedCredentialsMatcherTest() {//数据库里的 salt=24520ee264eab73ec09451d0e9ea6aac
+    /*
+     * Shiro默认使用了apache commons BeanUtils，默认是不进行Enum类型转型的，此时需要自己注册一个Enum转换器
+     * 解释:
+     *  ini文件设置jdbcRealm.saltStyle=COLUMN,是以字符串形式赋值的,
+     *  但是JdbcRealm类里设置saltStyle的值其实是一个枚举类型,(参考JdbcRealm)
+     *  所有你要把ini文件saltStyle=COLUMN的COLUMN变成枚举类型
+     */
     BeanUtilsBean.getInstance().getConvertUtils().register(new EnumConverter(), JdbcRealm.SaltStyle.class);
     
     login("classpath:part5/shiro-jdbc-hashedCredentialsMatcher.ini","liu","123");
   }
   
-  
-  
-  
-  private class EnumConverter extends AbstractConverter {
+ /* private class EnumConverter extends AbstractConverter {
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -82,17 +86,28 @@ public class ShiroPasswordTest extends AbstractRole {
       // TODO Auto-generated method stub
       return null;
     }
+  }*/
+
+  @Test(expected=ExcessiveAttemptsException.class)
+  public void retryConstraintTest() {
+    for (int i = 0; i < 5; i++) {//尝试5次失败
+      try {
+        login("classpath:part5/shiro-retry-constraint.ini","liu","234");
+      }catch (Exception e) {
+        
+      }
+    }
     
-    
-    
-    
-    
-    
+    //第六次
+    login("classpath:part5/shiro-retry-constraint.ini","liu","234");
   }
-
-  
   
 
-  
+  @Test
+  public void ehcachePath() {
+    String dirname = "java\\.io\\.tmpdir";
+    String path = System.getProperty(dirname);
+    System.out.println("java.io.tempdir:" + path);
+  }
   
 }

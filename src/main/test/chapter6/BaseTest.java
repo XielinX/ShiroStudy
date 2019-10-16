@@ -10,8 +10,6 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
 import org.apache.shiro.util.ThreadContext;
 import org.junit.After;
-import org.junit.Before;
-
 import com.xlx.ss.shiro.chapter6.entity.Permission;
 import com.xlx.ss.shiro.chapter6.entity.Role;
 import com.xlx.ss.shiro.chapter6.entity.User;
